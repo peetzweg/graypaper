@@ -1,0 +1,26 @@
+name: Reupload PDF
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+jobs:
+  build_latex:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download latest release
+        run: |
+          gh release download --repo gavofyork/graypaper -p "graypaper*.pdf" -O graypaper.pdf
+
+      - name: Upload With Gray Graphic BG
+        uses: actions/upload-artifact@v4
+        with:
+          name: Gray Paper Latest
+          path: graypaper.pdf
+          retention-days: 90
+          overwrite: true
+
